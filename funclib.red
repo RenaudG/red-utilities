@@ -22,6 +22,15 @@ use: func [
 ]
 
 
+apply: func [
+    "Apply a function to a block: apply :add [1 2] <=> add 1 2"
+    f   [function! action!] "Function to apply"
+    blk [block!]            "Argument list"
+][
+    do head insert blk :f
+]
+
+
 filter: func [
     "Return only the values for wich f(v) is true"
     blk [any-block!] "List of value to filter"
@@ -77,7 +86,7 @@ foldr: func [
 ; ------------------------[ PIPING TOOLS ]------------------------
 
 
-pipe: func[
+pipe: func [
     "Successively pipe a value as 1st (|>) or last (<|) argument of function calls"
     seed            "Starting value"
     block [block!]  "Sequence of pipeable instructions"
