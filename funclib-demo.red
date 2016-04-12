@@ -80,3 +80,7 @@ pp: piper [
 ]
 print [ "pp  5 = " pp 5 "^/------^/"]
 print [ "pp 10 = " pp 10 "^/------^/"]
+
+
+print ["apply :add [5 6] :" apply :add [5 6]]
+print ["apply func [x y] [ x * y] [5 6] :" apply func [x y] [ x * y] [5 6]]
