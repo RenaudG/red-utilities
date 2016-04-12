@@ -134,7 +134,7 @@ forgen: func [
     body    "Code to execute"
 ] [
     bind body 'var
-    if (type? f) = object! [f/init f: :f/next]
+    if object? f [f/init f: :f/next]
     while [set var f] [ do body ]
 ]
 
@@ -146,7 +146,7 @@ giveme: func [
     /local acc
     /more "Skips the iterator initialisation"
 ] [
-    if (type? f) = object! [
+    if object? f [
         unless more [ f/init ]
         f: :f/next
     ]
@@ -170,7 +170,7 @@ nth: func [
     n [integer!] ""
     /local v
 ][
-    if (type? f) = object! [f/init f: :f/next]
+    if object? f [f/init f: :f/next]
     if n < 1 [return none]
     loop n [ unless v: f [ return none ] ]
     v
