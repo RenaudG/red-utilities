@@ -1,2 +1,2 @@
 # red-utilities
-Libraries of various useful stuff for Red
+Work in Progress of various useful stuff for Red.
