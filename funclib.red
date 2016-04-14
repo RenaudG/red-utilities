@@ -15,8 +15,8 @@ Red [
 
 use: func [
     "Evaluate code while preventing vars to leak in global space"
-    vars [bloc!]    "List of variables to keep local"
-    code [bloc!]    "Code to execute"
+    vars [block!]    "List of variables to keep local"
+    code [block!]    "Code to execute"
 ] [
     do has vars code
 ]
@@ -46,7 +46,7 @@ filter: func [
 map: func [
     "Apply a function to all values in a block"
     blk [any-block!] "List of values"
-    f   [function!]  "Function to apply on values"
+    f   [function! native!]  "Function to apply on values"
     /local acc v
 ][
     acc: copy []
@@ -57,7 +57,7 @@ map: func [
 fold: foldl: func [
     "Fold a bloc from the left with a function"
     blk [any-block!]        "List of values to fold"
-    f   [function! action!] "Folding function"
+    f   [function! action! native!] "Folding function"
     /seed s                 "Start with this value instead of first item"
     /local v x
 ][
@@ -71,7 +71,7 @@ fold: foldl: func [
 foldr: func [
     "Fold a bloc from the right with a function"
     blk [any-block!]        "List of values to fold"
-    f   [function! action!] "Folding function"
+    f   [function! action! native!] "Folding function"
     /seed s                 "Start with this value instead of last item"
     /local v x
 ][
