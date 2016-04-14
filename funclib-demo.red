@@ -2,31 +2,38 @@ Red [
     Purpose: "Illustrate the use of some funclib.red utilities."
 ]
 
-; Simple randon generator
+; Simple random number generator... nothing fancy, just useful later
 rand100: does [random 100]
 
 
-; "generator" as a function
+; "generator" as a function. A generator must return some value, or none (when exhausted)
 it1: has [n] [
     either (n: random 100) > 90 [ none ][ n ]
 ]
 
-print "forgen it1"
+print "Test using forgen it1: printing generated values while we get some."
 forgen x :it1 [ print x ]
 
 
-; counter "generator" as an object.
+; "generator" as an object. As generators, object are more versatile than function.
+; Must provite an /init and a /next methods, the later returning some value, or none.
+; This Generator is a counter, counting from 1 to 10.
 it2: context [
     acc: 0
     init: does [acc: 0]
-    next: does [ either (acc: acc + 1) > 9 [ none ][ acc ] ]
+    next: does [
+        either (acc: acc + 1) > 10
+            [ none ]
+            [ acc ]
+    ]
 ]
 
-print "forgen it2"
+print "Test using forgen it2: printing generated values while we get some."
 forgen x it2 [ print x ]
 
 
-; Fibonacci "generator" as an object.
+; Fibonacci sequence "generator". Virtualy infinite... so don't use with forgen
+; unless you have an escape hatch somewhere...
 fibo: context [
     a: 0
     b: 1
@@ -39,23 +46,23 @@ fibo: context [
     ]
 ]
 
-print "forgen fibo"
+print "Test using forgen fibo: printing generated values while <= 30."
 forgen x fibo [
     print x
     if x > 30 [break]
 ]
 
-print "give me 10 fibo"
+print "Test GIVEME: give me 10 fibo"
 print mold giveme 10 fibo
 
-print "give me 10 more fibo"
+print "Test GIVEME/more: give me 10 more fibo"
 print mold giveme/more 10 fibo
 
-print "give me 10 more fibo (operator)"
+print "Test GIVEME/more: give me 10 more fibo (operator)"
 print mold 10 more fibo
 
-print "Testing a first pipe:"
-pipe 10 [
+
+p: [
     |> probe
     |> multiply 2
     |> probe
@@ -65,9 +72,12 @@ pipe 10 [
     |> probe
     |> either > 10 [ "machin" ][ "bidule" ]
 ]
+print "Testing a first pipe:"
+print mold p
+pipe 10 p 
 
 
-print "creating a function as with PIPER"
+print "creating a function with PIPER"
 pp: piper [
     |> probe
     |> multiply 2
