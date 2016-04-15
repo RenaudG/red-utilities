@@ -2,17 +2,11 @@ Red [
     Purpose: "Illustrate the use of some funclib.red utilities."
 ]
 
-; Simple random number generator... nothing fancy, just useful later
-rand100: does [random 100]
-
 
 ; "generator" as a function. A generator must return some value, or none (when exhausted)
 it1: has [n] [
     either (n: random 100) > 90 [ none ][ n ]
 ]
-
-print "Test using forgen it1: printing generated values while we get some."
-forgen x :it1 [ print x ]
 
 
 ; "generator" as an object. As generators, object are more versatile than function.
@@ -28,10 +22,6 @@ it2: context [
     ]
 ]
 
-print "Test using forgen it2: printing generated values while we get some."
-forgen x it2 [ print x ]
-
-
 ; Fibonacci sequence "generator". Virtualy infinite... so don't use with forgen
 ; unless you have an escape hatch somewhere...
 fibo: context [
@@ -45,6 +35,17 @@ fibo: context [
         c
     ]
 ]
+
+
+;+-------------------------------------------------------------------+
+;|  FORGEN is like FOREACH but use an iterator instead of a series.  |
+;+-------------------------------------------------------------------+
+
+print "Test using forgen it1: printing generated values while we get some."
+forgen x :it1 [ print x ]
+
+print "Test using forgen it2: printing generated values while we get some."
+forgen x it2 [ print x ]
 
 print "Test using forgen fibo: printing generated values while <= 30."
 forgen x fibo [
@@ -62,6 +63,10 @@ print "Test GIVEME/more: give me 10 more fibo (operator)"
 print mold 10 more fibo
 
 
+;+-------------------------------------------------------------------+
+;|  FORGEN is like FOREACH but use an iterator instead of a series.  |
+;+-------------------------------------------------------------------+
+
 p: [
     |> probe
     |> multiply 2
@@ -72,25 +77,27 @@ p: [
     |> probe
     |> either > 10 [ "machin" ][ "bidule" ]
 ]
-print "Testing a first pipe:"
-print mold p
-pipe 10 p 
+prin "Testing a first pipe: "
+print replace/all mold p "|>" "^/|>^-"
+print ["pipe 10 p: " pipe 10 p "^/------^/"]
 
 
-print "creating a function with PIPER"
+print "Creating a function with PIPER: in N first fibo numbers, sum the ven ones"
 pp: piper [
     |> probe
-    |> multiply 2
+    |> giveme fibo
     |> probe
-    <| subtract 16
+    |> filter func [x] [(x % 2) = 0]
     |> probe
-    |> multiply 3
-    |> probe
-    |> either > 10 [ "truc" ][ "chose" ]
+    |> fold :add
 ]
-print [ "pp  5 = " pp 5 "^/------^/"]
-print [ "pp 10 = " pp 10 "^/------^/"]
+print [ "pp 10: " pp 10 "^/------^/"]
+print [ "pp 30: " pp 30 "^/------^/"]
 
 
-print ["apply :add [5 6] :" apply :add [5 6]]
-print ["apply func [x y] [ x * y] [5 6] :" apply func [x y] [ x * y] [5 6]]
+;+-------------------------------------------------------------------+
+;|  APPLY.                                                           |
+;+-------------------------------------------------------------------+
+
+print ["apply :add [5 6] => " apply :add [5 6]]
+print ["apply func [x y] [ x * y] [5 6] => " apply func [x y] [x * y] [5 6]]
