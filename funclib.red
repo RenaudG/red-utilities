@@ -49,8 +49,8 @@ filter: func [
 
 map: func [
     "Apply a function to all values in a block"
-    blk [series!] "List of values"
-    f   [any-function!]  "Function to apply on values"
+    f   [any-function!] "Function to apply on values"
+    blk [series!]       "List of values"
     /local acc elt
 ][
     acc: make :blk length? blk
