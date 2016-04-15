@@ -44,10 +44,10 @@ demo {filter "Un avion qui vole" func [l][find "aeiou" l]}
 ;|  MAP.                                                             |
 ;+-------------------------------------------------------------------+
 
-demo {map "aaaaa" :uppercase}
-demo {map [1 2 3] func[x][x + 2]}
-demo {map quote (1 2 3) func[x][x + 2]}
-demo {map [1 2 3] :even?}
+demo {map :uppercase "aaaaa"}
+demo {map func[x][x + 2]  [1 2 3]}
+demo {map func[x][x + 2]  quote (1 2 3)}
+demo {map :even?  [1 2 3]}
 
 
 ;+-------------------------------------------------------------------+
