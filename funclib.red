@@ -87,7 +87,7 @@ foldr: func [
 
 
 pipe: func [
-    "Successively pipe a value as 1st (|>) or last (<|) argument of function calls"
+    "Pipes a value through a succession of expressions as 1st (|>) or last (<|) argument"
     seed            "Starting value"
     block [block!]  "Sequence of pipeable instructions"
     /local fun?
