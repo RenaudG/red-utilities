@@ -9,7 +9,7 @@ it1: has [n] [
 ]
 
 
-; "generator" as an object. As generators, object are more versatile than function.
+; "generator" as an object. As generators, objects are more versatile than function.
 ; Must provite an /init and a /next methods, the later returning some value, or none.
 ; This Generator is a counter, counting from 1 to 10.
 it2: context [
@@ -22,7 +22,7 @@ it2: context [
     ]
 ]
 
-; Fibonacci sequence "generator". Virtualy infinite... so don't use with forgen
+; Fibonacci sequence "generator". Virtualy infinite, so don't use with forgen
 ; unless you have an escape hatch somewhere...
 fibo: context [
     a: 0
@@ -50,7 +50,7 @@ forgen x it2 [ print x ]
 print "Test using forgen fibo: printing generated values while <= 30."
 forgen x fibo [
     print x
-    if x > 30 [break]
+    if x > 30 [break]  ; <-- the escape hatch ;-)
 ]
 
 print "Test GIVEME: give me 10 fibo"
@@ -77,12 +77,12 @@ p: [
     |> probe
     |> either > 10 [ "machin" ][ "bidule" ]
 ]
-prin "Testing a first pipe: "
+print "Testing a first pipe: "
 print replace/all mold p "|>" "^/|>^-"
 print ["pipe 10 p: " pipe 10 p "^/------^/"]
 
 
-print "Creating a function with PIPER: in N first fibo numbers, sum the ven ones"
+print "Creating a function with PIPER: with the N first fibo numbers, sums the even ones"
 pp: piper [
     |> probe
     |> giveme fibo
