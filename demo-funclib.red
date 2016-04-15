@@ -3,9 +3,15 @@ Red [
 ]
 
 ; utility to run/display the demos
-demo: func [ code ] [
-    prin [ "^/---[  code  ]------------------------^/" code "^/---[ result ]------------------------^/"]
-    print mold do code
+demo: func [ code /intro text /noresult] [
+    if intro [
+        prin [ "^/---[  Info  ]------------------------^/" text]
+    ]
+    print [ "^/---[  code  ]------------------------^/" code]
+    unless noresult [
+        print "---[ result ]------------------------"
+        print mold do code
+    ]
 ]
 
 ; Load the library
@@ -78,21 +84,15 @@ demo {pipe 5 [
    <| subtract 5
 ]}
 
-demo "^/^/"
-
 
 ;+-------------------------------------------------------------------+
 ;|  GENERATORS.                                                      |
 ;+-------------------------------------------------------------------+
 
-; "generator" as a function. A generator must return some value, or none (when exhausted)
-it1: has [n] [ either (n: random 100) > 90 [ none ][ n ] ]
+demo/intro/noresult {it1: has [n] [ either (n: random 100) > 90 [ none ][ n ]]}
+{Defining a function for "generator". Must return some value, or none (when exhausted)}
 
-
-; "generator" as an object. As generators, objects are more versatile than function.
-; Must provite an /init and a /next methods, the later returning some value, or none.
-; This Generator is a counter, counting from 1 to 10.
-it2: context [
+demo/intro/noresult {it2: context [
     acc: 0
     init: does [acc: 0]
     next: does [
@@ -100,11 +100,13 @@ it2: context [
             [ none ]
             [ acc ]
     ]
-]
+]}
+{"generator" as an object. As generators, objects are more versatile than function.
+Must provite an /init and a /next methods, the later returning some value, or none.
+This Generator is a counter, counting from 1 to 10.}
 
-; Fibonacci sequence "generator". Virtualy infinite, so don't use with forgen
-; unless you have an escape hatch somewhere...
-fibo: context [
+
+demo/intro/noresult {fibo: context [
     a: 0
     b: 1
     init: does [a: 0 b: 1]
@@ -115,6 +117,10 @@ fibo: context [
         c
     ]
 ]
+}
+{Fibonacci sequence "generator". Virtualy infinite, so don't use with forgen
+unless you have an escape hatch somewhere...}
+
 
 
 ;+-------------------------------------------------------------------+
