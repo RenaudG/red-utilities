@@ -8,6 +8,10 @@ Red [
         Distributed under the Boost Software License, Version 1.0.
         See https://github.com/red/red/blob/master/BSL-License.txt
     }
+    Notes:   {
+        2016-04-15 Now taking some inspiration from
+            http://www.rebol.org/view-script.r?script=hof.r
+    }
 ]
 
 
@@ -24,8 +28,8 @@ use: func [
 
 apply: func [
     "Apply a function to a block: apply :add [1 2] <=> add 1 2"
-    f   [function! action!] "Function to apply"
-    blk [block!]            "Argument list"
+    f   [any-function!] "Function to apply"
+    blk [series!]       "Argument list"
 ][
     do head insert blk :f
 ]
@@ -33,11 +37,11 @@ apply: func [
 
 filter: func [
     "Return only the values for wich f(v) is true"
-    blk [any-block!] "List of value to filter"
-    f   [function!]  "Predicate for values to satisfy"
+    blk [series!]        "List of value to filter"
+    f   [any-function!]  "Predicate for values to satisfy"
     /local acc
 ][
-    acc: copy []
+    acc: make :blk length? blk
     foreach v blk [ if f v [append/only acc v] ]
     acc
 ]
@@ -45,19 +49,19 @@ filter: func [
 
 map: func [
     "Apply a function to all values in a block"
-    blk [any-block!] "List of values"
-    f   [function! native!]  "Function to apply on values"
-    /local acc v
+    blk [series!] "List of values"
+    f   [any-function!]  "Function to apply on values"
+    /local acc elt
 ][
-    acc: copy []
-    foreach v blk [ append/only acc f v ]
+    acc: make :blk length? blk
+    foreach elt blk [ append/only acc f :elt ]
 ]
 
 
 fold: foldl: func [
     "Fold a bloc from the left with a function"
-    blk [any-block!]        "List of values to fold"
-    f   [function! action! native!] "Folding function"
+    blk [series!]       "List of values to fold"
+    f   [any-function!] "Folding function"
     /seed s                 "Start with this value instead of first item"
     /local v x
 ][
@@ -70,9 +74,9 @@ fold: foldl: func [
 
 foldr: func [
     "Fold a bloc from the right with a function"
-    blk [any-block!]        "List of values to fold"
-    f   [function! action! native!] "Folding function"
-    /seed s                 "Start with this value instead of last item"
+    blk [series!]       "List of values to fold"
+    f   [any-function!] "Folding function"
+    /seed s             "Start with this value instead of last item"
     /local v x
 ][
     blk: reverse copy blk
