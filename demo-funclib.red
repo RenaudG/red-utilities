@@ -2,11 +2,91 @@ Red [
     Purpose: "Illustrate the use of some funclib.red utilities."
 ]
 
+; utility to run/display the demos
+demo: func [ code ] [
+    prin [ "^/---[  code  ]------------------------^/" code "^/---[ result ]------------------------^/"]
+    print mold do code
+]
+
+; Load the library
+do %funclib.red
+
+;+-------------------------------------------------------------------+
+;|  USE.                                                             |
+;+-------------------------------------------------------------------+
+
+demo {x: 1
+print x
+use [x] [
+    x: 4
+    print x
+]
+x}
+
+;+-------------------------------------------------------------------+
+;|  APPLY.                                                           |
+;+-------------------------------------------------------------------+
+
+demo "apply :add [5 6]"
+demo "apply func [x y] [x * y] [5 6]"
+
+
+;+-------------------------------------------------------------------+
+;|  FILTER.                                                          |
+;+-------------------------------------------------------------------+
+
+demo {filter [1 2 3 4 5 6] :even?}
+demo {filter quote (1 2 3 4 5 6) :odd?}
+demo {filter "Un avion qui vole" func [l][find "aeiou" l]}
+
+
+;+-------------------------------------------------------------------+
+;|  MAP.                                                             |
+;+-------------------------------------------------------------------+
+
+demo {map "aaaaa" :uppercase}
+demo {map [1 2 3] func[x][x + 2]}
+demo {map quote (1 2 3) func[x][x + 2]}
+demo {map [1 2 3] :even?}
+
+
+;+-------------------------------------------------------------------+
+;|  FOLD.                                                            |
+;+-------------------------------------------------------------------+
+
+demo {fold [1 2 3 4 5] :add}
+demo {fold quote (1 2 3 4 5) :add}
+demo {foldl [1 2 3 4 5] :subtract}
+demo {foldr [1 2 3 4 5] :subtract}
+
+
+;+-------------------------------------------------------------------+
+;|  PIPING.                                                          |
+;+-------------------------------------------------------------------+
+
+demo {pipe 5 [
+   |> multiply 2
+   |> probe
+   |> subtract 5
+   |> probe
+   |> either > 10 [ "machin" ][ "bidule" ]
+]}
+
+demo {pipe 5 [
+   |> multiply 2
+   |> probe
+   <| subtract 5
+]}
+
+demo "^/^/"
+
+
+;+-------------------------------------------------------------------+
+;|  GENERATORS.                                                      |
+;+-------------------------------------------------------------------+
 
 ; "generator" as a function. A generator must return some value, or none (when exhausted)
-it1: has [n] [
-    either (n: random 100) > 90 [ none ][ n ]
-]
+it1: has [n] [ either (n: random 100) > 90 [ none ][ n ] ]
 
 
 ; "generator" as an object. As generators, objects are more versatile than function.
@@ -61,43 +141,3 @@ print mold giveme/more 10 fibo
 
 print "Test GIVEME/more: give me 10 more fibo (operator)"
 print mold 10 more fibo
-
-
-;+-------------------------------------------------------------------+
-;|  FORGEN is like FOREACH but use an iterator instead of a series.  |
-;+-------------------------------------------------------------------+
-
-p: [
-    |> probe
-    |> multiply 2
-    |> probe
-    |> subtract 16
-    |> probe
-    |> multiply 3
-    |> probe
-    |> either > 10 [ "machin" ][ "bidule" ]
-]
-print "Testing a first pipe: "
-print replace/all mold p "|>" "^/|>^-"
-print ["pipe 10 p: " pipe 10 p "^/------^/"]
-
-
-print "Creating a function with PIPER: with the N first fibo numbers, sums the even ones"
-pp: piper [
-    |> probe
-    |> giveme fibo
-    |> probe
-    |> filter func [x] [(x % 2) = 0]
-    |> probe
-    |> fold :add
-]
-print [ "pp 10: " pp 10 "^/------^/"]
-print [ "pp 30: " pp 30 "^/------^/"]
-
-
-;+-------------------------------------------------------------------+
-;|  APPLY.                                                           |
-;+-------------------------------------------------------------------+
-
-print ["apply :add [5 6] => " apply :add [5 6]]
-print ["apply func [x y] [ x * y] [5 6] => " apply func [x y] [x * y] [5 6]]
