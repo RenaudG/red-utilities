@@ -8,10 +8,12 @@ demo: func [ code /intro text /noresult] [
         prin [ "^/---[  Info  ]------------------------^/" text]
     ]
     print [ "^/---[  code  ]------------------------^/" code]
-    unless noresult [
-        print "---[ result ]------------------------"
-        print mold do code
-    ]
+    either noresult
+        [ do code ]
+        [
+            print "---[ result ]------------------------"
+            print mold do code
+        ]
 ]
 
 ; Load the library
@@ -127,23 +129,12 @@ unless you have an escape hatch somewhere...}
 ;|  FORGEN is like FOREACH but use an iterator instead of a series.  |
 ;+-------------------------------------------------------------------+
 
-print "Test using forgen it1: printing generated values while we get some."
-forgen x :it1 [ print x ]
-
-print "Test using forgen it2: printing generated values while we get some."
-forgen x it2 [ print x ]
-
-print "Test using forgen fibo: printing generated values while <= 30."
-forgen x fibo [
+demo "forgen x :it1 [ print x ]"
+demo "forgen x it2 [ print x ]"
+demo {forgen x fibo [
     print x
     if x > 30 [break]  ; <-- the escape hatch ;-)
-]
-
-print "Test GIVEME: give me 10 fibo"
-print mold giveme 10 fibo
-
-print "Test GIVEME/more: give me 10 more fibo"
-print mold giveme/more 10 fibo
-
-print "Test GIVEME/more: give me 10 more fibo (operator)"
-print mold 10 more fibo
+]}
+demo "giveme 10 fibo"
+demo "giveme/more 10 fibo"
+demo "10 more fibo"
