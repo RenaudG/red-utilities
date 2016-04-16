@@ -133,9 +133,9 @@ piper: func [
 
 forgen: func [
     "Runs a body of code while a generator has values to provide"
-    'var    "Variable name used in body"
-    f       "Iterator as an object or a function"
-    body    "Code to execute"
+    'var [word!] "Variable name used in body"
+    f [any-function! object!] "Iterator as an object or a function"
+    body [block!] "Code to execute"
 ] [
     bind body 'var
     if object? f [f/init f: :f/next]
@@ -145,8 +145,8 @@ forgen: func [
 
 giveme: func [
     "Collect n values from an iterator"
-    n   "Number of values to collect"
-    f   "Iterator as an object or a function"
+    n [integer!] "Number of values to collect"
+    f [any-function! object!] "Iterator as an object or a function"
     /local acc
     /more "Skips the iterator initialisation"
 ] [
@@ -161,8 +161,8 @@ giveme: func [
 
 more: make op! func [
     "Collect n next values from an iterator"
-    n   "Number of values to collect"
-    f   "Iterator as an object or a function"
+    n [integer!] "Number of values to collect"
+    f [any-function! object!] "Iterator as an object or a function"
 ] [
     giveme/more n f
 ]
