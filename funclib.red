@@ -86,15 +86,6 @@ foldr: func [
     v
 ]
 
-zip: func [
-    a [series!]
-    b [series!]
-    /local c
-][
-    c: make block! min size a size b
-    
-]
-
 
 ; ------------------------[ PIPING TOOLS ]------------------------
 
@@ -178,7 +169,7 @@ more: make op! func [
 
 nth: func [
     "Return the Nth value from an iterator"
-    f "Iterator"
+    f [any-function! object!] "Iterator"
     n [integer!] ""
     /local v
 ][
