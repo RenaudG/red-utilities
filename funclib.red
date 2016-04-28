@@ -151,15 +151,6 @@ forgen: func [
 ]
 
 
-use: func [
-    "Evaluate code while preventing vars to leak in global space"
-    vars [block!]    "List of variables to keep local"
-    code [block!]    "Code to execute"
-] [
-    do has vars code
-]
-
-
 giveme: func [
     "Collect n values from an iterator"
     n [integer!] "Number of values to collect"
