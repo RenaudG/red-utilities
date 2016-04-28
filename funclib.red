@@ -86,6 +86,15 @@ foldr: func [
     v
 ]
 
+zip: func [
+    a [series!]
+    b [series!]
+    /local c
+][
+    c: make block! min size a size b
+    
+]
+
 
 ; ------------------------[ PIPING TOOLS ]------------------------
 
@@ -137,9 +146,17 @@ forgen: func [
     f [any-function! object!] "Iterator as an object or a function"
     body [block!] "Code to execute"
 ] [
-    bind body 'var
     if object? f [f/init f: :f/next]
-    while [set var f] [ do body ]
+    while [set var f] body
+]
+
+
+use: func [
+    "Evaluate code while preventing vars to leak in global space"
+    vars [block!]    "List of variables to keep local"
+    code [block!]    "Code to execute"
+] [
+    do has vars code
 ]
 
 
@@ -154,7 +171,7 @@ giveme: func [
         unless more [ f/init ]
         f: :f/next
     ]
-    acc: copy []
+    acc: make block! n
     loop n [ append acc f ]
 ]
 
